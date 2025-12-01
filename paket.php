@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<?php 
+$pageTitle = "Paket Umroh & Haji";
+$pageDesc = "Temukan paket perjalanan ibadah Umroh dan Haji terbaik dengan fasilitas bintang 5 dan pelayanan profesional.";
+include 'header.php'; 
+?>
 
 <!-- Page Header -->
 <section class="relative py-24 bg-gold-gradient overflow-hidden">

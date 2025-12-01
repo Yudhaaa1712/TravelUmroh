@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<?php 
+$pageTitle = "Testimoni Jamaah";
+$pageDesc = "Kisah inspiratif dan pengalaman nyata para jamaah yang telah berangkat umroh dan haji bersama kami.";
+include 'header.php'; 
+?>
 
 <!-- Hero Section -->
 <section class="relative h-[40vh] flex items-center justify-center overflow-hidden">

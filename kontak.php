@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<?php 
+$pageTitle = "Hubungi Kami";
+$pageDesc = "Informasi kontak, alamat kantor, dan layanan konsultasi 24 jam Ababil Tour & Hajj Pekanbaru.";
+include 'header.php'; 
+?>
 
 <!-- Hero Section -->
 <section class="relative h-[40vh] flex items-center justify-center overflow-hidden">
@@ -29,9 +33,9 @@
                         <div>
                             <h4 class="font-bold text-xl text-gray-900 mb-2">Alamat Kantor</h4>
                             <p class="text-gray-600 leading-relaxed">
-                                Jl. Sultan Iskandar Muda No. 18<br>
-                                Kebayoran Lama, Jakarta Selatan<br>
-                                DKI Jakarta 12240
+                                Jl. Jend. Sudirman No. 45<br>
+                                Pekanbaru, Riau<br>
+                                28282
                             </p>
                         </div>
                     </div>
@@ -61,7 +65,7 @@
 
                 <!-- Map Embed -->
                 <div class="rounded-2xl overflow-hidden shadow-lg border-2 border-gold/30 h-[300px] relative group">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.055886228779!2d106.78118931476932!3d-6.256371995471245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1a3a3a3a3a3%3A0x3a3a3a3a3a3a3a3a!2sPondok%20Indah%20Mall!5e0!3m2!1sen!2sid!4v1625637199547!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127669.0506076352!2d101.37163614068228!3d0.505086204068228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5ab80690ee7b1%3A0x94dde92c3823dbe4!2sPekanbaru%2C%20Pekanbaru%20City%2C%20Riau!5e0!3m2!1sen!2sid!4v1625637199547!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     <div class="absolute inset-0 pointer-events-none border-4 border-transparent group-hover:border-gold/50 transition-colors duration-300 rounded-2xl"></div>
                 </div>
             </div>

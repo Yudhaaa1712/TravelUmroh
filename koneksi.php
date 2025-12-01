@@ -21,7 +21,7 @@ function query($query) {
     return $rows;
 }
 
-// Function to upload image
+// Function to upload image with SEO friendly name & WebP support
 function upload($target_dir = 'uploads/') {
     $namaFile = $_FILES['gambar']['name'];
     $ukuranFile = $_FILES['gambar']['size'];
@@ -36,8 +36,9 @@ function upload($target_dir = 'uploads/') {
     // Check valid extension
     $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'webp'];
     $ekstensiGambar = explode('.', $namaFile);
-    $ekstensiGambar = strtolower(end($ekstensiGambar));
-    if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+    $ekstensiAsli = strtolower(end($ekstensiGambar));
+    
+    if( !in_array($ekstensiAsli, $ekstensiGambarValid) ) {
         echo "<script>alert('Yang anda upload bukan gambar!');</script>";
         return false;
     }
@@ -48,16 +49,40 @@ function upload($target_dir = 'uploads/') {
         return false;
     }
 
-    // Generate new filename
-    $namaFileBaru = uniqid();
-    $namaFileBaru .= '.';
-    $namaFileBaru .= $ekstensiGambar;
+    // SEO Friendly Filename: nama-file-asli-uniqid
+    $namaBase = pathinfo($namaFile, PATHINFO_FILENAME);
+    // Sanitize: remove special chars, replace spaces with dashes
+    $namaBase = preg_replace('/[^a-zA-Z0-9]/', '-', $namaBase);
+    $namaBase = preg_replace('/-+/', '-', $namaBase); // Remove duplicate dashes
+    $namaBase = trim($namaBase, '-');
+    $namaBase = strtolower($namaBase);
 
     // Ensure directory exists
     if (!file_exists('../' . $target_dir)) {
         mkdir('../' . $target_dir, 0777, true);
     }
 
+    // Try to convert to WebP
+    if (function_exists('imagewebp') && in_array($ekstensiAsli, ['jpg', 'jpeg', 'png'])) {
+        $namaFileBaru = $namaBase . '-' . uniqid() . '.webp';
+        $targetPath = '../' . $target_dir . $namaFileBaru;
+        
+        $image = null;
+        if ($ekstensiAsli == 'jpeg' || $ekstensiAsli == 'jpg') 
+            $image = imagecreatefromjpeg($tmpName);
+        elseif ($ekstensiAsli == 'png')
+            $image = imagecreatefrompng($tmpName);
+            
+        if ($image) {
+            // Convert to WebP with 80% quality
+            imagewebp($image, $targetPath, 80);
+            imagedestroy($image);
+            return $target_dir . $namaFileBaru;
+        }
+    }
+
+    // Fallback: Use original extension if WebP conversion fails or not supported
+    $namaFileBaru = $namaBase . '-' . uniqid() . '.' . $ekstensiAsli;
     move_uploaded_file($tmpName, '../' . $target_dir . $namaFileBaru);
 
     return $target_dir . $namaFileBaru;

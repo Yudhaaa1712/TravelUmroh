@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ababil Tour & Hajj - Perjalanan Ibadah Nyaman & Aman</title>
+    <title><?php echo isset($pageTitle) ? $pageTitle . ' - Ababil Tour & Hajj' : 'Ababil Tour & Hajj - Perjalanan Ibadah Nyaman & Aman'; ?></title>
+    <meta name="description" content="<?php echo isset($pageDesc) ? $pageDesc : 'Melayani perjalanan ibadah Umroh dan Haji dengan pelayanan prima, amanah, dan profesional sejak 2010. Kenyamanan Anda adalah prioritas kami.'; ?>">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,6 +85,7 @@
                     'haji.php' => 'Haji',
                     'galeri.php' => 'Galeri',
                     'testimoni.php' => 'Testimoni',
+                    'blog.php' => 'Blog',
                     'kontak.php' => 'Kontak'
                 ];
 

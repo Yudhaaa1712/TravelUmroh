@@ -46,6 +46,12 @@
                             <span>Galeri</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="blog.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'blog.php') ? 'bg-white/20 font-bold' : ''; ?>">
+                            <i class="fa-solid fa-newspaper w-5 text-center"></i>
+                            <span>Blog & Artikel</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 

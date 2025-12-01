@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<?php 
+$pageTitle = "Ibadah Haji Khusus & Furoda";
+$pageDesc = "Program Haji Plus dan Haji Furoda (Mujamalah) langsung berangkat tanpa antri dengan visa resmi.";
+include 'header.php'; 
+?>
 
 <!-- Hero Section -->
 <section class="relative h-[60vh] flex items-center justify-center overflow-hidden">

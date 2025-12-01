@@ -52,7 +52,7 @@
                         <div class="w-8 h-8 rounded bg-black flex items-center justify-center text-gold group-hover:text-black transition-colors flex-shrink-0">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <span class="text-black text-sm leading-relaxed">Jl. Raya Condet No. 123, Kramat Jati, Jakarta Timur, 13520</span>
+                        <span class="text-black text-sm leading-relaxed">Jl. Jend. Sudirman No. 45, Pekanbaru, Riau, 28282</span>
                     </li>
                     <li class="flex items-center gap-4 group">
                         <div class="w-8 h-8 rounded bg-black flex items-center justify-center text-gold group-hover:text-black transition-colors flex-shrink-0">

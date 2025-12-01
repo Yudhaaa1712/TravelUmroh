@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<?php 
+$pageTitle = "Galeri Kegiatan Jamaah";
+$pageDesc = "Dokumentasi foto dan video perjalanan ibadah jamaah Ababil Tour di Tanah Suci Makkah dan Madinah.";
+include 'header.php'; 
+?>
 
 <!-- Hero Section -->
 <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
