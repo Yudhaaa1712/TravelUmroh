@@ -43,7 +43,13 @@
                         <tr>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div class="flex-shrink-0 w-20 h-20">
-                                    <img class="w-full h-full rounded-md object-cover" src="../<?= $row['gambar']; ?>" alt="" />
+                                    <?php 
+                                    $gambarSrc = $row['gambar'];
+                                    if (!preg_match('/^https?:\/\//', $gambarSrc)) {
+                                        $gambarSrc = '../' . $gambarSrc;
+                                    }
+                                    ?>
+                                    <img class="w-full h-full rounded-md object-cover" src="<?= $gambarSrc; ?>" alt="" onerror="this.src='https://placehold.co/100x100/1a1a1a/gold?text=No+Image'" />
                                 </div>
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">

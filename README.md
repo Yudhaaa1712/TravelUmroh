@@ -1,34 +1,51 @@
-# TravelUmroh - Struktur Folder Website
+# TravelUmroh - Website Travel Umroh & Haji
 
-## 📁 Root Directory (/)
+## 📁 Struktur Folder
+
 ```
 TravelUmroh/
 │
 ├── 📄 index.php              # Homepage utama
-├── 📄 header.php             # Header template (navbar, head)
-├── 📄 footer.php             # Footer template (scripts)
-├── 📄 koneksi.php            # Database connection & helper functions
+├── 📄 paket.php              # Halaman paket umroh
+├── 📄 haji.php               # Halaman haji
+├── 📄 galeri.php             # Halaman galeri
+├── 📄 testimoni.php          # Halaman testimoni
+├── 📄 blog.php               # Halaman blog
+├── 📄 kontak.php             # Halaman kontak
+├── 📄 tentang-kami.php       # Halaman tentang kami
+├── 📄 detail-paket.php       # Detail paket
+├── 📄 detail-blog.php        # Detail artikel
+├── 📄 landing.php            # SEO Landing page per kota
 ├── 📄 sitemap.php            # Auto-generate XML sitemap
-├── 📄 style.css              # Custom CSS styles
 ├── 📄 .htaccess              # Apache rewrite rules
 │
-├── 📁 pages/                 # Halaman-halaman website
-│   ├── paket.php             # Halaman paket umrah
-│   ├── haji.php              # Halaman haji
-│   ├── galeri.php            # Halaman galeri
-│   ├── testimoni.php         # Halaman testimoni
-│   ├── blog.php              # Halaman blog
-│   ├── kontak.php            # Halaman kontak
-│   ├── tentang-kami.php      # Halaman tentang kami
-│   ├── detail-paket.php      # Detail paket
-│   ├── detail-blog.php       # Detail artikel
-│   └── landing.php           # SEO Landing page per kota
+├── 📁 assets/                # Static assets
+│   ├── css/
+│   │   └── style.css         # Custom CSS styles
+│   ├── js/                   # JavaScript files
+│   └── images/               # Static images
 │
-├── 📁 includes/              # PHP includes & helpers
+├── 📁 config/                # Configuration files
+│   ├── app.php               # App configuration
+│   ├── koneksi.php           # Database connection & helpers
+│   └── bootstrap.php         # Application bootstrap
+│
+├── 📁 core/                  # Core classes
+│   ├── Database.php          # Database class (PDO)
+│   ├── Security.php          # Security functions
+│   └── ImageUploader.php     # Image upload handler
+│
+├── 📁 includes/              # PHP includes & templates
+│   ├── header.php            # Header template (navbar, head)
+│   ├── footer.php            # Footer template (scripts)
 │   └── cities_data.php       # Database kota untuk SEO
 │
 ├── 📁 components/            # Komponen reusable
 │   └── chat-widget.php       # Widget chat WA
+│
+├── 📁 database/              # SQL files
+│   ├── database.sql          # Schema database utama
+│   └── database_gambar.sql   # Schema pengaturan gambar
 │
 ├── 📁 admin/                 # Panel admin
 │   ├── index.php             # Dashboard admin
@@ -37,7 +54,7 @@ TravelUmroh/
 │   ├── includes/             # Admin includes
 │   │   ├── header.php
 │   │   └── sidebar.php
-│   ├── paket_umroh.php       # Kelola paket umrah
+│   ├── paket_umroh.php       # Kelola paket umroh
 │   ├── paket_haji.php        # Kelola paket haji
 │   ├── muthawif.php          # Kelola muthawif
 │   ├── galeri.php            # Kelola galeri
@@ -53,15 +70,14 @@ TravelUmroh/
 │   ├── galeri/               # Gambar galeri
 │   ├── muthawif/             # Foto muthawif
 │   ├── testimoni/            # Foto testimoni
-│   ├── blog/                 # Gambar artikel
+│   ├── haji/                 # Gambar haji
 │   └── website/              # Gambar website (hero, dll)
 │
-└── 📁 sql/                   # Database SQL files
-    ├── database.sql          # Schema database utama
-    └── database_gambar.sql   # Schema pengaturan gambar
+└── 📁 logs/                  # Log files
+    └── .htaccess             # Deny access to logs
 ```
 
-## 🔗 URL Structure (Clean URLs via .htaccess)
+## 🔗 URL Structure
 
 | URL Pattern | File Target |
 |-------------|-------------|
@@ -69,6 +85,21 @@ TravelUmroh/
 | `/paket.php` | `paket.php` |
 | `/travel-umrah-{city}` | `landing.php?city={city}` |
 | `/sitemap.xml` | `sitemap.php` |
+
+## 🚀 Quick Start
+
+1. Import database:
+   ```sql
+   -- Import file dari folder database/
+   source database/database.sql
+   source database/database_gambar.sql
+   ```
+
+2. Konfigurasi database di `config/koneksi.php`
+
+3. Akses website: `http://localhost/TravelUmroh/`
+
+4. Akses admin: `http://localhost/TravelUmroh/admin/`
 
 ## 📝 Notes
 
@@ -80,8 +111,9 @@ TravelUmroh/
 ### Gambar
 - Upload gambar di folder `uploads/`
 - Pengaturan gambar website via admin di `pengaturan_gambar.php`
-- Fungsi `getGambar()` di `koneksi.php` untuk mengambil gambar
+- Fungsi `getGambar()` di `config/koneksi.php` untuk mengambil gambar
 
-### Database
-- Import `sql/database.sql` terlebih dahulu
-- Import `sql/database_gambar.sql` untuk tabel pengaturan gambar
+### Security
+- Core security functions di `core/Security.php`
+- PDO database wrapper di `core/Database.php`
+- Image validation di `core/ImageUploader.php`

@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Tentang Kami - Profil Perusahaan";
 $pageDesc = "Mengenal lebih dekat Ababil Tour & Hajj, penyelenggara perjalanan ibadah umroh dan haji terpercaya sejak 2010.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Hero Section -->
@@ -154,4 +154,4 @@ include 'header.php';
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

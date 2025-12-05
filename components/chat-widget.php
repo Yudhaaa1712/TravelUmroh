@@ -102,7 +102,7 @@
         },
         {
             keywords: ['kontak', 'hubungi', 'wa', 'whatsapp', 'telpon', 'nomor', 'admin', 'cs', 'manusia', 'orang'],
-            response: "Tentu, Anda bisa langsung terhubung dengan staf kami via WhatsApp: <br><a href='https://wa.me/6281234567890' target='_blank' class='text-emerald-600 font-bold underline'>Klik di sini untuk Chat WA</a>"
+            response: "Tentu, Anda bisa langsung terhubung dengan staf kami via WhatsApp: <br><a href='https://wa.me/6281261288354?text=Assalamualaikum%20saya%20ingin%20bertanya%20tentang%20paket%20umroh' target='_blank' class='text-emerald-600 font-bold underline'>Klik di sini untuk Chat WA</a>"
         },
         {
             keywords: ['assalamualaikum', 'halo', 'hai', 'pagi', 'siang', 'sore', 'malam', 'hi'],
@@ -114,7 +114,7 @@
         }
     ];
 
-    const defaultResponse = "Maaf, saya belum mengerti pertanyaan spesifik itu. <br>Namun saya bisa jelaskan tentang **Harga**, **Hotel**, **Pesawat**, atau **Jadwal**. <br><br>Atau hubungi staf kami langsung via <a href='https://wa.me/6281234567890' class='text-emerald-600 font-bold underline'>WhatsApp</a>.";
+    const defaultResponse = "Maaf, saya belum mengerti pertanyaan spesifik itu. <br>Namun saya bisa jelaskan tentang **Harga**, **Hotel**, **Pesawat**, atau **Jadwal**. <br><br>Atau hubungi staf kami langsung via <a href='https://wa.me/6281261288354?text=Assalamualaikum%20saya%20ingin%20bertanya' target='_blank' class='text-emerald-600 font-bold underline'>WhatsApp</a>.";
 
     // --- Logic ---
     const chatWidget = document.getElementById('ai-chat-widget');

@@ -1,10 +1,10 @@
 <?php
-require 'koneksi.php';
+require 'config/koneksi.php';
 
 $pageTitle = "Blog & Artikel Terbaru";
 $pageDesc = "Dapatkan informasi terbaru seputar tips umroh, haji, dan berita terkini dari Ababil Tour.";
 
-include 'header.php';
+include 'includes/header.php';
 
 // Check if table exists
 $check_table = mysqli_query($koneksi, "SHOW TABLES LIKE 'artikel'");
@@ -65,4 +65,4 @@ if(mysqli_num_rows($check_table) > 0) {
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

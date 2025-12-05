@@ -1,12 +1,16 @@
 <?php
-require 'koneksi.php';
+require 'config/koneksi.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: blog.php');
+    exit;
+}
 
 // Check if table exists
 $check_table = mysqli_query($koneksi, "SHOW TABLES LIKE 'artikel'");
 if(mysqli_num_rows($check_table) > 0) {
-    $data = query("SELECT * FROM artikel WHERE id = $id");
+    $data = query("SELECT * FROM artikel WHERE id = " . (int)$id);
 } else {
     $data = [];
 }
@@ -21,7 +25,7 @@ $article = $data[0];
 $pageTitle = $article['judul'];
 $pageDesc = substr(strip_tags($article['konten']), 0, 155);
 
-include 'header.php';
+include 'includes/header.php';
 ?>
 
 <!-- Article Header -->
@@ -67,4 +71,4 @@ include 'header.php';
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

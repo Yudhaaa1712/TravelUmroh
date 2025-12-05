@@ -2,8 +2,17 @@
 <?php include 'includes/sidebar.php'; ?>
 
 <?php
-$id = $_GET['id'];
-$testimoni = query("SELECT * FROM testimoni WHERE id = $id")[0];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: testimoni.php');
+    exit;
+}
+$result = query("SELECT * FROM testimoni WHERE id = " . (int)$id);
+if (empty($result)) {
+    header('Location: testimoni.php');
+    exit;
+}
+$testimoni = $result[0];
 
 if (isset($_POST['submit'])) {
     $nama_jamaah = htmlspecialchars($_POST['nama_jamaah']);
@@ -20,6 +29,7 @@ if (isset($_POST['submit'])) {
         $gambar = upload('uploads/testimoni/');
     }
 
+    $update_id = (int)$testimoni['id'];
     $query = "UPDATE testimoni SET
                 nama_jamaah = '$nama_jamaah',
                 paket_diambil = '$paket_diambil',
@@ -27,7 +37,7 @@ if (isset($_POST['submit'])) {
                 rating = '$rating',
                 gambar = '$gambar',
                 is_featured = '$is_featured'
-              WHERE id = $id";
+              WHERE id = $update_id";
 
     if (mysqli_query($koneksi, $query)) {
         echo "<script>

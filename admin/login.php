@@ -1,6 +1,8 @@
 <?php
 session_start();
-require '../koneksi.php';
+
+// Connect to database
+$koneksi = mysqli_connect("localhost", "root", "", "travel_umroh");
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];

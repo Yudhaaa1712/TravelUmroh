@@ -1,0 +1,4 @@
+# Deny access to log files
+<FilesMatch ".*">
+    Require all denied
+</FilesMatch>

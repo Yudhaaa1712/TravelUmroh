@@ -29,7 +29,14 @@
                         <tr>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div class="flex-shrink-0 w-24 h-24">
-                                    <img class="w-full h-full rounded-lg object-cover" src="../<?= $row['gambar']; ?>" alt="" />
+                                    <?php 
+                                    $gambarSrc = $row['gambar'];
+                                    // Jika bukan URL external, tambahkan ../
+                                    if (!preg_match('/^https?:\/\//', $gambarSrc)) {
+                                        $gambarSrc = '../' . $gambarSrc;
+                                    }
+                                    ?>
+                                    <img class="w-full h-full rounded-lg object-cover" src="<?= $gambarSrc; ?>" alt="<?= $row['judul']; ?>" onerror="this.src='https://placehold.co/200x200/1a1a1a/gold?text=No+Image'" />
                                 </div>
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">

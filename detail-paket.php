@@ -1,8 +1,12 @@
 <?php
-require 'koneksi.php';
+require 'config/koneksi.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$data = query("SELECT * FROM paket_umroh WHERE id = $id");
+if ($id <= 0) {
+    header('Location: paket.php');
+    exit;
+}
+$data = query("SELECT * FROM paket_umroh WHERE id = " . (int)$id);
 
 if(empty($data)) {
     echo "<script>alert('Paket tidak ditemukan!'); window.location='paket.php';</script>";
@@ -17,23 +21,37 @@ $pageDesc = substr(strip_tags($paket['deskripsi']), 0, 160);
 $harga_format = number_format($paket['harga'], 0, ',', '.');
 $tanggal_berangkat = date('d F Y', strtotime($paket['keberangkatan']));
 
-include 'header.php';
+include 'includes/header.php';
 ?>
 
 <!-- Page Header -->
-<section class="relative h-[60vh] overflow-hidden">
+<section class="relative h-[75vh] overflow-hidden bg-gray-900">
+    <!-- Background Blur Effect -->
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1600&auto=format&fit=crop'; ?>" alt="<?php echo $paket['nama_paket']; ?>" class="w-full h-full object-cover animate-float" style="animation-duration: 30s; transform: scale(1.1);">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90"></div>
+        <img src="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1600&auto=format&fit=crop'; ?>" 
+             alt="Background" 
+             class="w-full h-full object-cover opacity-40 blur-2xl scale-110">
     </div>
-    <div class="absolute bottom-0 left-0 w-full p-8 md:p-16">
+
+    <!-- Main Image (Full View) -->
+    <div class="absolute inset-0 z-0 flex items-center justify-center p-4 pb-20 md:pb-24">
+        <img src="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1600&auto=format&fit=crop'; ?>" 
+             alt="<?php echo $paket['nama_paket']; ?>" 
+             class="h-full w-auto max-w-full object-contain shadow-2xl rounded-lg">
+    </div>
+
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+
+    <!-- Content Overlay -->
+    <div class="absolute bottom-0 left-0 w-full p-8 md:p-16 z-20">
         <div class="container mx-auto px-4">
             <div data-aos="fade-up">
                 <span class="bg-gold-gradient text-emerald-deep px-4 py-1 rounded-full text-sm font-bold uppercase tracking-widest mb-6 inline-block shadow-lg">
                     <?php echo $paket['is_featured'] ? 'Promo Spesial' : 'Paket Reguler'; ?>
                 </span>
-                <h1 class="font-serif text-4xl md:text-6xl font-bold text-white mb-4 text-shadow-gold"><?php echo $paket['nama_paket']; ?></h1>
-                <div class="flex items-center gap-6 text-white/90 text-lg">
+                <h1 class="font-serif text-3xl md:text-5xl font-bold text-white mb-4 text-shadow-gold"><?php echo $paket['nama_paket']; ?></h1>
+                <div class="flex flex-wrap items-center gap-4 md:gap-6 text-white/90 text-sm md:text-lg">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-calendar-days text-gold"></i> <?php echo $tanggal_berangkat; ?></span>
                     <span class="hidden md:flex items-center gap-2"><i class="fa-solid fa-plane text-gold"></i> <?php echo $paket['pesawat']; ?></span>
                     <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-gold"></i> <?php echo $paket['durasi']; ?> Hari</span>
@@ -64,6 +82,31 @@ include 'header.php';
                     </h3>
                     <div class="prose prose-emerald max-w-none text-gray-600">
                         <?php echo nl2br($paket['deskripsi']); ?>
+                    </div>
+                </div>
+
+                <!-- Brosur Paket -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100" data-aos="fade-up">
+                    <h3 class="font-serif text-2xl font-bold text-emerald-deep mb-6 border-b border-gray-100 pb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-image text-gold"></i> Brosur Paket
+                    </h3>
+                    <div class="flex flex-col items-center">
+                        <img src="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1600&auto=format&fit=crop'; ?>" 
+                             alt="Brosur <?php echo $paket['nama_paket']; ?>" 
+                             class="w-full h-auto rounded-xl shadow-md object-contain border border-gray-200">
+                        
+                        <div class="mt-6 flex gap-4">
+                            <a href="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : '#'; ?>" 
+                               target="_blank"
+                               class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-deep border border-emerald-deep rounded-lg hover:bg-emerald-50 transition-colors font-medium">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Full
+                            </a>
+                            <a href="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : '#'; ?>" 
+                               download="Brosur-<?php echo str_replace(' ', '-', $paket['nama_paket']); ?>.jpg"
+                               class="inline-flex items-center gap-2 px-6 py-3 bg-gold-gradient text-emerald-deep rounded-lg hover:shadow-lg hover:scale-105 transition-all font-bold">
+                                <i class="fa-solid fa-download"></i> Download Brosur
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -127,7 +170,7 @@ include 'header.php';
                         </div>
 
                         <div class="space-y-4">
-                            <a href="https://wa.me/6281234567890?text=Assalamualaikum,%20saya%20tertarik%20dengan%20<?php echo urlencode($paket['nama_paket']); ?>" class="block w-full py-4 bg-gold-gradient text-emerald-deep font-bold text-center rounded-xl hover:shadow-lg hover:scale-105 transition-all shadow-md group">
+                            <a href="https://wa.me/6281261288354?text=Assalamualaikum%20saya%20tertarik%20dengan%20paket%20<?php echo rawurlencode($paket['nama_paket']); ?>" target="_blank" class="block w-full py-4 bg-gold-gradient text-emerald-deep font-bold text-center rounded-xl hover:shadow-lg hover:scale-105 transition-all shadow-md group">
                                 <span class="flex items-center justify-center gap-2">
                                     <i class="fa-brands fa-whatsapp text-xl"></i> Booking via WhatsApp
                                 </span>
@@ -176,4 +219,4 @@ include 'header.php';
 }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

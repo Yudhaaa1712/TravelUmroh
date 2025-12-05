@@ -5,7 +5,7 @@ if (!isset($_SESSION['login'])) {
     header("Location: login.php");
     exit;
 }
-require '../koneksi.php';
+require '../config/koneksi.php';
 
 // Cek apakah tabel sudah ada, jika belum buat
 $check_table = mysqli_query($koneksi, "SHOW TABLES LIKE 'pengaturan_gambar'");

@@ -2,8 +2,17 @@
 <?php include 'includes/sidebar.php'; ?>
 
 <?php
-$id = $_GET['id'];
-$paket = query("SELECT * FROM paket_haji WHERE id = $id")[0];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: paket_haji.php');
+    exit;
+}
+$result = query("SELECT * FROM paket_haji WHERE id = " . (int)$id);
+if (empty($result)) {
+    header('Location: paket_haji.php');
+    exit;
+}
+$paket = $result[0];
 
 if (isset($_POST['submit'])) {
     $nama_paket = htmlspecialchars($_POST['nama_paket']);
@@ -33,7 +42,7 @@ if (isset($_POST['submit'])) {
                 hotel_makkah = '$hotel_makkah',
                 hotel_madinah = '$hotel_madinah',
                 gambar = '$gambar'
-              WHERE id = $id";
+              WHERE id = " . (int)$paket['id'];
 
     if (mysqli_query($koneksi, $query)) {
         echo "<script>

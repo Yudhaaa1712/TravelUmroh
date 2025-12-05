@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Paket Umroh & Haji";
 $pageDesc = "Temukan paket perjalanan ibadah Umroh dan Haji terbaik dengan fasilitas bintang 5 dan pelayanan profesional.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Page Header -->
@@ -26,7 +26,7 @@ include 'header.php';
             <div class="lg:w-full">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <?php
-                    require_once 'koneksi.php';
+                    require_once 'config/koneksi.php';
                     $paket_umroh = query("SELECT * FROM paket_umroh ORDER BY keberangkatan ASC");
                     
                     if (empty($paket_umroh)) : ?>
@@ -96,20 +96,9 @@ include 'header.php';
                     </div>
                     <?php endforeach; endif; ?>
                 </div>
-
-                <!-- Pagination (Static for now) -->
-                <div class="mt-16 flex justify-center gap-3">
-                    <button class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-gold hover:text-gold transition-all hover:shadow-md">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button class="w-12 h-12 rounded-full bg-gold-gradient text-emerald-deep flex items-center justify-center font-bold shadow-lg transform scale-110">1</button>
-                    <button class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-gold hover:text-gold transition-all hover:shadow-md">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

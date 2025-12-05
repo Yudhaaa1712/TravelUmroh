@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Galeri Kegiatan Jamaah";
 $pageDesc = "Dokumentasi foto dan video perjalanan ibadah jamaah Ababil Tour di Tanah Suci Makkah dan Madinah.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Hero Section -->
@@ -30,7 +30,7 @@ include 'header.php';
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="gallery-grid">
             <?php
-            require_once 'koneksi.php';
+            require_once 'config/koneksi.php';
             $galeri = query("SELECT * FROM galeri ORDER BY created_at DESC");
             
             if (empty($galeri)) : ?>
@@ -94,4 +94,4 @@ include 'header.php';
     });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

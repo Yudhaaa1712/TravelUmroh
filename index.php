@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <?php
 // Ambil hero background (bisa gambar atau video)
@@ -52,7 +52,7 @@ $is_video = preg_match('/\.(mp4|webm|ogg)$/i', $hero_bg) || strpos($hero_bg, 'yo
                 </span>
                 <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </a>
-            <a href="https://wa.me/6281234567890" class="px-10 py-4 glass-gold text-emerald-deep font-bold rounded-full border border-gold hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg flex items-center justify-center gap-2">
+            <a href="https://wa.me/6281261288354?text=Assalamualaikum%20saya%20ingin%20konsultasi%20tentang%20paket%20umroh" target="_blank" class="px-10 py-4 glass-gold text-emerald-deep font-bold rounded-full border border-gold hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg flex items-center justify-center gap-2">
                 Konsultasi VIP <i class="fa-brands fa-whatsapp text-xl"></i>
             </a>
         </div>
@@ -103,7 +103,7 @@ $is_video = preg_match('/\.(mp4|webm|ogg)$/i', $hero_bg) || strpos($hero_bg, 'yo
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <?php
-            require_once 'koneksi.php';
+            require_once 'config/koneksi.php';
             $featured_paket = query("SELECT * FROM paket_umroh WHERE is_featured = 1 ORDER BY created_at DESC LIMIT 3");
             
             if (empty($featured_paket)) : ?>
@@ -505,4 +505,4 @@ $is_video = preg_match('/\.(mp4|webm|ogg)$/i', $hero_bg) || strpos($hero_bg, 'yo
     });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

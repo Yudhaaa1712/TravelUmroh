@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Testimoni Jamaah";
 $pageDesc = "Kisah inspiratif dan pengalaman nyata para jamaah yang telah berangkat umroh dan haji bersama kami.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Hero Section -->
@@ -43,7 +43,7 @@ include 'header.php';
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php
-            require_once 'koneksi.php';
+            require_once 'config/koneksi.php';
             $testimoni = query("SELECT * FROM testimoni ORDER BY created_at DESC");
             
             if (empty($testimoni)) : ?>
@@ -96,11 +96,11 @@ include 'header.php';
             <a href="paket.php" class="px-8 py-4 bg-gold-gradient text-emerald-deep font-bold rounded-full hover:shadow-lg hover:scale-105 transition-all">
                 Lihat Jadwal Paket
             </a>
-            <a href="https://wa.me/6281234567890" class="px-8 py-4 border border-gold text-gold font-bold rounded-full hover:bg-gold hover:text-emerald-deep transition-all">
+            <a href="https://wa.me/6281261288354?text=Assalamualaikum%20saya%20ingin%20bertanya%20tentang%20paket%20umroh" target="_blank" class="px-8 py-4 border border-gold text-gold font-bold rounded-full hover:bg-gold hover:text-emerald-deep transition-all">
                 Konsultasi Gratis <i class="fa-brands fa-whatsapp ml-2"></i>
             </a>
         </div>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

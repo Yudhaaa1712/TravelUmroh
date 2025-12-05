@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Ibadah Haji Khusus & Furoda";
 $pageDesc = "Program Haji Plus dan Haji Furoda (Mujamalah) langsung berangkat tanpa antri dengan visa resmi.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Hero Section -->
@@ -60,56 +60,84 @@ include 'header.php';
             <div class="w-24 h-1 bg-gold-gradient mx-auto rounded-full mt-4"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php
-            require_once 'koneksi.php';
+            require_once 'config/koneksi.php';
             $paket_haji = query("SELECT * FROM paket_haji ORDER BY created_at DESC");
             
             if (empty($paket_haji)) : ?>
-                <div class="col-span-2 text-center py-10">
+                <div class="col-span-3 text-center py-10">
                     <p class="text-gray-500 text-lg">Belum ada paket haji tersedia saat ini.</p>
                 </div>
             <?php else : 
                 foreach ($paket_haji as $row) :
                     $is_furoda = ($row['tipe_haji'] == 'Furoda');
-                    $border_class = $is_furoda ? 'border-gold' : 'border-gray-100 hover:border-gold';
-                    $badge_class = $is_furoda ? 'bg-white/20 backdrop-blur' : 'bg-gold';
-                    $badge_text = $is_furoda ? 'Visa Mujamalah' : 'Kuota Resmi';
             ?>
-            <!-- Dynamic Card -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl group border <?= $border_class; ?> relative transition-all duration-300" data-aos="fade-up">
-                <?php if($is_furoda): ?>
-                    <div class="absolute top-0 inset-x-0 h-2 bg-gold-gradient"></div>
-                    <div class="absolute top-4 right-4 bg-gold-gradient text-emerald-deep px-4 py-1 rounded-full text-xs font-bold uppercase shadow-lg z-10">Langsung Berangkat</div>
-                <?php endif; ?>
-                
-                <div class="relative h-64">
-                    <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=800&auto=format&fit=crop'; ?>" alt="<?= $row['nama_paket']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
-                    <div class="absolute bottom-6 left-6 text-white">
-                        <span class="<?= $badge_class; ?> px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-2 inline-block"><?= $badge_text; ?></span>
-                        <h4 class="font-serif text-3xl font-bold"><?= $row['nama_paket']; ?></h4>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <div class="flex justify-between items-end mb-6">
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Estimasi Keberangkatan</p>
-                            <p class="font-bold text-emerald-deep"><?= $row['estimasi_keberangkatan']; ?></p>
+            <!-- Package Card - Brochure Style (Same as Umroh) -->
+            <div class="group relative" data-aos="fade-up">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <!-- Image Container - Full Brochure Display -->
+                    <div class="relative bg-gradient-to-br from-emerald-900 to-emerald-700">
+                        <!-- Badge -->
+                        <div class="absolute top-4 left-4 z-20 <?= $is_furoda ? 'bg-gold-gradient text-emerald-deep' : 'bg-gold text-emerald-deep'; ?> px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg">
+                            <i class="fa-solid fa-kaaba mr-1"></i><?= $is_furoda ? 'Furoda' : 'Haji Plus'; ?>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm text-gray-500 mb-1">Mulai dari</p>
-                            <p class="text-2xl font-serif font-bold text-gold-dark">$ <?= number_format($row['harga_usd'], 0, ',', '.'); ?></p>
+                        
+                        <?php if($is_furoda): ?>
+                        <div class="absolute top-4 right-4 z-20 bg-emerald-deep text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                            Langsung Berangkat
+                        </div>
+                        <?php endif; ?>
+                        
+                        <!-- Brochure Image - Full Display -->
+                        <div class="relative aspect-[3/4] overflow-hidden">
+                            <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=800'; ?>" 
+                                 alt="<?= $row['nama_paket']; ?>" 
+                                 class="w-full h-full object-contain bg-gradient-to-b from-gray-100 to-gray-200 transform group-hover:scale-105 transition-transform duration-700" 
+                                 loading="lazy">
                         </div>
                     </div>
-                    <ul class="space-y-3 mb-8 text-gray-600">
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> <?= $row['pesawat']; ?></li>
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> <?= $row['hotel_makkah']; ?> (Makkah)</li>
-                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> <?= $row['hotel_madinah']; ?> (Madinah)</li>
-                    </ul>
-                    <a href="https://wa.me/6281234567890?text=Saya%20tertarik%20dengan%20<?= urlencode($row['nama_paket']); ?>" class="block w-full py-4 <?= $is_furoda ? 'bg-gold-gradient text-emerald-deep' : 'bg-emerald-deep text-white hover:bg-gold-dark'; ?> text-center font-bold rounded-lg transition-all">
-                        <?= $is_furoda ? 'Daftar Sekarang' : 'Konsultasi & Pendaftaran'; ?>
-                    </a>
+                    
+                    <!-- Info Footer -->
+                    <div class="p-5 bg-white">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs text-emerald-deep font-bold bg-emerald-50 px-3 py-1 rounded-full">
+                                <i class="fa-solid fa-calendar mr-1"></i><?= $row['estimasi_keberangkatan']; ?>
+                            </span>
+                            <span class="text-xs <?= $is_furoda ? 'text-gold-dark bg-yellow-50' : 'text-blue-600 bg-blue-50'; ?> font-bold px-3 py-1 rounded-full">
+                                <i class="fa-solid fa-<?= $is_furoda ? 'bolt' : 'clock'; ?> mr-1"></i><?= $is_furoda ? 'Visa Mujamalah' : 'Kuota Resmi'; ?>
+                            </span>
+                        </div>
+                        
+                        <h3 class="font-serif text-lg font-bold text-emerald-deep mb-2 line-clamp-2 group-hover:text-gold-dark transition-colors">
+                            <?= $row['nama_paket']; ?>
+                        </h3>
+                        
+                        <div class="space-y-2 text-sm text-gray-500 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-plane text-gold w-4"></i>
+                                <span class="truncate"><?= $row['pesawat']; ?></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-hotel text-gold w-4"></i>
+                                <span class="truncate"><?= $row['hotel_makkah']; ?> (Makkah)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-building text-gold w-4"></i>
+                                <span class="truncate"><?= $row['hotel_madinah']; ?> (Madinah)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div>
+                                <p class="text-xs text-gray-400">Mulai dari</p>
+                                <p class="text-xl font-bold text-gold-dark">$ <?= number_format($row['harga_usd'], 0, ',', '.'); ?></p>
+                            </div>
+                            <a href="https://wa.me/6281261288354?text=Assalamualaikum%20saya%20tertarik%20dengan%20paket%20<?= rawurlencode($row['nama_paket']); ?>" target="_blank" class="<?= $is_furoda ? 'bg-gold-gradient text-emerald-deep' : 'bg-emerald-deep text-white'; ?> px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all">
+                                Daftar <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <?php endforeach; endif; ?>
@@ -151,4 +179,4 @@ include 'header.php';
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

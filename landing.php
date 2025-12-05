@@ -5,7 +5,7 @@
  * Menggunakan header.php dan footer.php utama
  */
 
-require_once 'koneksi.php';
+require_once 'config/koneksi.php';
 require_once 'includes/cities_data.php';
 
 // Ambil slug kota dari URL
@@ -31,15 +31,15 @@ $pageTitle = "Paket Umrah dari {$cityData['name']}";
 $pageDesc = "Travel Umrah terpercaya untuk jamaah {$cityData['name']}, {$cityData['province']}. Berangkat dari Bandara {$cityData['airport']}. Fasilitas lengkap, bimbingan profesional.";
 
 // WA pre-filled message
-$waMessage = urlencode("Assalamualaikum, saya dari {$cityData['name']} mau tanya paket umrah");
-$waNumber = "6281234567890"; // Ganti dengan nomor WA asli
+$waMessage = rawurlencode("Assalamualaikum saya dari {$cityData['name']} ingin bertanya tentang paket umrah");
+$waNumber = "6281261288354";
 $waLink = "https://wa.me/{$waNumber}?text={$waMessage}";
 
 // Ambil paket umrah FEATURED dari database (sama dengan homepage)
 $packages = query("SELECT * FROM paket_umroh WHERE is_featured = 1 ORDER BY created_at DESC LIMIT 3");
 
 // Include header utama
-include 'header.php';
+include 'includes/header.php';
 ?>
 
 <!-- JSON-LD Schema: TravelAgency -->
@@ -399,4 +399,4 @@ include 'header.php';
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

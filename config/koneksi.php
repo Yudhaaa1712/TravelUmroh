@@ -15,6 +15,11 @@ if (!function_exists('query')) {
     function query($query) {
         global $koneksi;
         $result = mysqli_query($koneksi, $query);
+        if (!$result) {
+            // Log error in production, show in development
+            error_log("MySQL Error: " . mysqli_error($koneksi) . " | Query: " . $query);
+            return [];
+        }
         $rows = [];
         while( $row = mysqli_fetch_assoc($result) ) {
             $rows[] = $row;
@@ -80,7 +85,7 @@ if (!function_exists('upload')) {
         if (empty($namaBase)) $namaBase = 'image';
 
         // Get the root directory
-        $root_dir = dirname(__FILE__) . '/';
+        $root_dir = dirname(__DIR__) . '/';
         $full_target_dir = $root_dir . 'uploads/' . $target_dir . '/';
         
         // Ensure directory exists
@@ -88,7 +93,11 @@ if (!function_exists('upload')) {
             mkdir($full_target_dir, 0777, true);
         }
 
-        // Try to convert to WebP
+        // Max dimensions for resize (lebar maksimal 1200px untuk web)
+        $maxWidth = 1200;
+        $maxHeight = 1600;
+
+        // Try to convert to WebP with resize
         if (function_exists('imagewebp') && in_array($ekstensiAsli, ['jpg', 'jpeg', 'png'])) {
             $namaFileBaru = $namaBase . '-' . uniqid() . '.webp';
             $targetPath = $full_target_dir . $namaFileBaru;
@@ -100,6 +109,33 @@ if (!function_exists('upload')) {
                 $image = @imagecreatefrompng($tmpName);
                 
             if ($image) {
+                // Get original dimensions
+                $origWidth = imagesx($image);
+                $origHeight = imagesy($image);
+                
+                // Calculate new dimensions (maintain aspect ratio)
+                $newWidth = $origWidth;
+                $newHeight = $origHeight;
+                
+                if ($origWidth > $maxWidth || $origHeight > $maxHeight) {
+                    $ratio = min($maxWidth / $origWidth, $maxHeight / $origHeight);
+                    $newWidth = (int)($origWidth * $ratio);
+                    $newHeight = (int)($origHeight * $ratio);
+                    
+                    // Resize image
+                    $resized = imagecreatetruecolor($newWidth, $newHeight);
+                    
+                    // Preserve transparency for PNG
+                    if ($ekstensiAsli == 'png') {
+                        imagealphablending($resized, false);
+                        imagesavealpha($resized, true);
+                    }
+                    
+                    imagecopyresampled($resized, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
+                    imagedestroy($image);
+                    $image = $resized;
+                }
+                
                 imagewebp($image, $targetPath, 80);
                 imagedestroy($image);
                 return 'uploads/' . $target_dir . '/' . $namaFileBaru;
@@ -126,7 +162,8 @@ if (!function_exists('getGambar')) {
             return $default;
         }
         
-        $result = mysqli_query($koneksi, "SELECT gambar FROM pengaturan_gambar WHERE kode = '$kode' LIMIT 1");
+        $kode_escaped = mysqli_real_escape_string($koneksi, $kode);
+        $result = mysqli_query($koneksi, "SELECT gambar FROM pengaturan_gambar WHERE kode = '$kode_escaped' LIMIT 1");
         if ($result && mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $gambar = $row['gambar'];

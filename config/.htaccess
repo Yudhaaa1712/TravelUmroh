@@ -1,0 +1,4 @@
+# Deny access to config files
+<FilesMatch ".*">
+    Require all denied
+</FilesMatch>

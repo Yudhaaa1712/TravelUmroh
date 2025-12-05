@@ -1,7 +1,7 @@
 <?php 
 $pageTitle = "Hubungi Kami";
 $pageDesc = "Informasi kontak, alamat kantor, dan layanan konsultasi 24 jam Ababil Tour & Hajj Pekanbaru.";
-include 'header.php'; 
+include 'includes/header.php'; 
 ?>
 
 <!-- Hero Section -->
@@ -116,4 +116,4 @@ include 'header.php';
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

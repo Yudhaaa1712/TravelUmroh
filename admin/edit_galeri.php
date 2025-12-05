@@ -2,8 +2,17 @@
 <?php include 'includes/sidebar.php'; ?>
 
 <?php
-$id = $_GET['id'];
-$galeri = query("SELECT * FROM galeri WHERE id = $id")[0];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: galeri.php');
+    exit;
+}
+$result = query("SELECT * FROM galeri WHERE id = " . (int)$id);
+if (empty($result)) {
+    header('Location: galeri.php');
+    exit;
+}
+$galeri = $result[0];
 
 if (isset($_POST['submit'])) {
     $judul = htmlspecialchars($_POST['judul']);
@@ -17,11 +26,12 @@ if (isset($_POST['submit'])) {
         $gambar = upload('uploads/galeri/');
     }
 
+    $update_id = (int)$galeri['id'];
     $query = "UPDATE galeri SET
                 judul = '$judul',
                 kategori = '$kategori',
                 gambar = '$gambar'
-              WHERE id = $id";
+              WHERE id = $update_id";
 
     if (mysqli_query($koneksi, $query)) {
         echo "<script>

@@ -1,5 +1,5 @@
 <?php 
-require_once '../koneksi.php';
+require_once '../config/koneksi.php';
 
 // Proses form jika submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

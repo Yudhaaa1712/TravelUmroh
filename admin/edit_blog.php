@@ -2,8 +2,17 @@
 <?php include 'includes/sidebar.php'; ?>
 
 <?php
-$id = $_GET['id'];
-$data = query("SELECT * FROM artikel WHERE id = $id")[0];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: blog.php');
+    exit;
+}
+$result = query("SELECT * FROM artikel WHERE id = " . (int)$id);
+if (empty($result)) {
+    header('Location: blog.php');
+    exit;
+}
+$data = $result[0];
 ?>
 
 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
@@ -75,7 +84,7 @@ if(isset($_POST['submit'])) {
                 slug = '$slug',
                 konten = '$konten',
                 gambar = '$gambar'
-              WHERE id = $id";
+              WHERE id = " . (int)$data['id'];
     
     if(mysqli_query($koneksi, $query)) {
         echo "<script>

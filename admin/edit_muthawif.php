@@ -2,8 +2,17 @@
 <?php include 'includes/sidebar.php'; ?>
 
 <?php
-$id = $_GET['id'];
-$muthawif = query("SELECT * FROM muthawif WHERE id = $id")[0];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: muthawif.php');
+    exit;
+}
+$result = query("SELECT * FROM muthawif WHERE id = " . (int)$id);
+if (empty($result)) {
+    header('Location: muthawif.php');
+    exit;
+}
+$muthawif = $result[0];
 
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
@@ -20,6 +29,7 @@ if (isset($_POST['submit'])) {
         $gambar = upload('uploads/muthawif/');
     }
 
+    $update_id = (int)$muthawif['id'];
     $query = "UPDATE muthawif SET
                 nama = '$nama',
                 peran = '$peran',
@@ -27,7 +37,7 @@ if (isset($_POST['submit'])) {
                 instagram = '$instagram',
                 facebook = '$facebook',
                 gambar = '$gambar'
-              WHERE id = $id";
+              WHERE id = $update_id";
 
     if (mysqli_query($koneksi, $query)) {
         echo "<script>

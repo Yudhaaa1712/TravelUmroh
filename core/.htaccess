@@ -1,0 +1,4 @@
+# Deny access to core files
+<FilesMatch ".*">
+    Require all denied
+</FilesMatch>

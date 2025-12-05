@@ -96,7 +96,7 @@
 </footer>
 
 <!-- Floating Smart AI Chat Widget -->
-<?php if(file_exists('components/chat-widget.php')) include 'components/chat-widget.php'; ?>
+<?php if(file_exists(__DIR__ . '/../components/chat-widget.php')) include __DIR__ . '/../components/chat-widget.php'; ?>
 
 <!-- Scripts - Defer non-critical -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
