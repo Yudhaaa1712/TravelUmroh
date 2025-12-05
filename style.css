@@ -1,5 +1,39 @@
 /* Custom Styles for Ababil Tour & Hajj - Luxury Edition */
 
+/* Prevent horizontal scroll - PENTING */
+html {
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+    position: relative;
+}
+
+/* GPU Acceleration for smooth animations */
+.card-luxury,
+[data-aos],
+.group img,
+.transition-transform {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
 /* Font Setup is handled via Google Fonts in header */
 
 /* Luxury Gold Gradients */
@@ -18,7 +52,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: #B38728; /* Fallback */
+    color: #B38728;
+    /* Fallback */
     font-weight: 700;
 }
 
@@ -27,12 +62,25 @@
 }
 
 /* Solid Colors */
-.text-gold { color: #C5A028; }
-.bg-gold { background-color: #C5A028; }
-.border-gold { border-color: #C5A028; }
+.text-gold {
+    color: #C5A028;
+}
 
-.text-emerald-deep { color: #064E3B; }
-.bg-emerald-deep { background-color: #064E3B; }
+.bg-gold {
+    background-color: #C5A028;
+}
+
+.border-gold {
+    border-color: #C5A028;
+}
+
+.text-emerald-deep {
+    color: #064E3B;
+}
+
+.bg-emerald-deep {
+    background-color: #064E3B;
+}
 
 /* Luxury Card Styles */
 .card-luxury {
@@ -50,20 +98,33 @@
 
 /* Animations */
 @keyframes shimmer {
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
 .shimmer-effect {
     animation: shimmer 3s infinite linear;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
     background-size: 1000px 100%;
 }
 
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 .animate-float {
@@ -91,7 +152,7 @@
 }
 
 .text-shadow-sm {
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Glassmorphism */

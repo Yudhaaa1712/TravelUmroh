@@ -7,11 +7,12 @@ include 'header.php';
 <!-- Hero Section -->
 <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gold-gradient"></div>
+        <img src="<?= getGambar('galeri_hero', 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=2070'); ?>" alt="Galeri" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
     </div>
     <div class="relative z-10 text-center px-4" data-aos="fade-up">
-        <h1 class="font-serif text-5xl md:text-6xl font-bold text-emerald-deep mb-4">Galeri Momen</h1>
-        <p class="text-xl text-emerald-deep max-w-2xl mx-auto">Dokumentasi perjalanan ibadah para tamu Allah bersama Ababil Tour.</p>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold text-white mb-4">Galeri Momen</h1>
+        <p class="text-xl text-gold-light max-w-2xl mx-auto">Dokumentasi perjalanan ibadah para tamu Allah bersama Ababil Tour.</p>
     </div>
 </section>
 
@@ -41,7 +42,7 @@ include 'header.php';
             ?>
             <!-- Gallery Item -->
             <div class="group relative h-80 rounded-2xl overflow-hidden cursor-pointer shadow-lg" data-aos="fade-up">
-                <img src="<?= $row['gambar']; ?>" alt="<?= $row['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop'; ?>" alt="<?= $row['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-0 left-0 p-6">
                         <span class="text-gold text-xs font-bold uppercase tracking-wider mb-2 block"><?= $row['kategori']; ?></span>

@@ -1,10 +1,34 @@
 <?php include 'header.php'; ?>
 
+<?php
+// Ambil hero background (bisa gambar atau video)
+$hero_bg = getGambar('hero_bg', 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=2070&auto=format&fit=crop');
+$is_video = preg_match('/\.(mp4|webm|ogg)$/i', $hero_bg) || strpos($hero_bg, 'youtube.com') !== false || strpos($hero_bg, 'youtu.be') !== false;
+?>
+
 <!-- Hero Section -->
 <section class="relative h-screen flex items-center justify-center overflow-hidden">
-    <!-- Background Image with Overlay -->
+    <!-- Background Image/Video with Overlay -->
     <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=2070&auto=format&fit=crop" alt="Masjidil Haram" class="w-full h-full object-cover animate-float" style="animation-duration: 20s; transform: scale(1.1);">
+        <?php if($is_video): ?>
+            <?php if(strpos($hero_bg, 'youtube.com') !== false || strpos($hero_bg, 'youtu.be') !== false): 
+                // Extract YouTube ID
+                preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $hero_bg, $matches);
+                $youtube_id = $matches[1] ?? '';
+            ?>
+                <iframe class="w-full h-full object-cover scale-150" 
+                        src="https://www.youtube.com/embed/<?= $youtube_id ?>?autoplay=1&mute=1&loop=1&playlist=<?= $youtube_id ?>&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" 
+                        frameborder="0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen></iframe>
+            <?php else: ?>
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                    <source src="<?= $hero_bg ?>" type="video/mp4">
+                </video>
+            <?php endif; ?>
+        <?php else: ?>
+            <img src="<?= $hero_bg ?>" alt="Masjidil Haram" class="w-full h-full object-cover animate-float" style="animation-duration: 20s; transform: scale(1.1);">
+        <?php endif; ?>
         <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] opacity-10"></div>
     </div>
@@ -15,11 +39,11 @@
             <span class="px-4 py-1 rounded-full border border-gold text-gold text-xs uppercase tracking-[0.3em] bg-black/30 backdrop-blur-sm">Premium Umroh & Hajj Services</span>
         </div>
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight text-shadow-gold" data-aos="fade-up" data-aos-delay="100">
-            Perjalanan Suci <br>
+            Ababil Tour & Hajj<br>
             <span class="text-gold-gradient italic">Berkelas & Mulia</span>
         </h1>
         <p class="text-lg md:text-xl text-gray-200 mb-12 max-w-3xl mx-auto font-light leading-relaxed" data-aos="fade-up" data-aos-delay="200">
-            Rasakan ketenangan ibadah dengan fasilitas bintang lima. Kami menghadirkan pengalaman Umroh yang tidak hanya nyaman, tetapi juga penuh kemewahan dan kekhusyukan.
+         Mitra terpercaya perjalanan ibadah Umroh & Haji Anda
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center" data-aos="fade-up" data-aos-delay="300">
             <a href="paket.php" class="group relative px-10 py-4 bg-gold-gradient text-white font-bold rounded-full overflow-hidden shadow-[0_0_20px_rgba(197,160,40,0.5)] hover:shadow-[0_0_30px_rgba(197,160,40,0.8)] transition-all transform hover:-translate-y-1">
@@ -34,13 +58,6 @@
         </div>
     </div>
 
-    <!-- Scroll Down Indicator -->
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-gold">
-        <div class="flex flex-col items-center gap-2">
-            <span class="text-[10px] uppercase tracking-widest text-white/70">Scroll Down</span>
-            <i class="fa-solid fa-chevron-down text-2xl"></i>
-        </div>
-    </div>
 </section>
 
 <!-- Stats Counter -->
@@ -96,52 +113,55 @@
             <?php else : 
                 foreach ($featured_paket as $row) :
             ?>
-            <!-- Package Card Dynamic -->
-            <div class="card-luxury rounded-xl overflow-hidden group relative z-10" data-aos="fade-up">
-                <div class="relative h-72 overflow-hidden">
-                    <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur text-emerald-deep px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg border border-gold/30">
-                        Promo Spesial
-                    </div>
-                    <img src="<?= $row['gambar']; ?>" alt="<?= $row['nama_paket']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6">
-                        <p class="text-gold-light font-medium tracking-wide mb-1">Keberangkatan <?= date('d M Y', strtotime($row['keberangkatan'])); ?></p>
-                        <h4 class="font-serif text-2xl font-bold text-white group-hover:text-gold transition-colors"><?= $row['nama_paket']; ?></h4>
-                    </div>
-                </div>
-                <div class="p-8 bg-white relative">
-                    <div class="absolute -top-6 right-6 w-12 h-12 bg-gold-gradient rounded-full flex items-center justify-center text-emerald-deep shadow-lg group-hover:rotate-12 transition-transform">
-                        <i class="fa-solid fa-star"></i>
+            <!-- Package Card - Brochure Style -->
+            <div class="group relative" data-aos="fade-up">
+                <!-- Card Container -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <!-- Image Container - Full Brochure Display -->
+                    <div class="relative bg-gradient-to-br from-emerald-900 to-emerald-700">
+                        <!-- Badge -->
+                        <div class="absolute top-4 left-4 z-20 bg-gold text-emerald-deep px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg">
+                            <i class="fa-solid fa-fire mr-1"></i> Promo
+                        </div>
+                        
+                        <!-- Brochure Image - Full Display -->
+                        <div class="relative aspect-[3/4] overflow-hidden">
+                            <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=800'; ?>" 
+                                 alt="<?= $row['nama_paket']; ?>" 
+                                 class="w-full h-full object-contain bg-gradient-to-b from-gray-100 to-gray-200 transform group-hover:scale-105 transition-transform duration-700" 
+                                 loading="lazy">
+                        </div>
                     </div>
                     
-                    <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                        <span class="text-gray-500 text-sm"><?= $row['durasi']; ?></span>
-                        <span class="text-emerald-deep font-bold bg-emerald-50 px-2 py-1 rounded text-xs">Available</span>
-                    </div>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div class="flex items-center gap-4 text-gray-600 group-hover:text-emerald-deep transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center text-gold-dark">
-                                <i class="fa-solid fa-plane"></i>
+                    <!-- Info Footer -->
+                    <div class="p-5 bg-white">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs text-emerald-deep font-bold bg-emerald-50 px-3 py-1 rounded-full">
+                                <i class="fa-solid fa-calendar-days mr-1"></i><?= $row['durasi']; ?>
+                            </span>
+                            <span class="text-xs text-gray-500">
+                                <i class="fa-solid fa-plane-departure mr-1"></i><?= date('d M Y', strtotime($row['keberangkatan'])); ?>
+                            </span>
+                        </div>
+                        
+                        <h3 class="font-serif text-lg font-bold text-emerald-deep mb-2 line-clamp-2 group-hover:text-gold-dark transition-colors">
+                            <?= $row['nama_paket']; ?>
+                        </h3>
+                        
+                        <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                            <i class="fa-solid fa-hotel text-gold"></i>
+                            <span class="truncate"><?= $row['hotel_makkah']; ?></span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div>
+                                <p class="text-xs text-gray-400">Mulai dari</p>
+                                <p class="text-xl font-bold text-gold-dark">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></p>
                             </div>
-                            <span class="text-sm font-medium"><?= $row['pesawat']; ?></span>
+                            <a href="detail-paket.php?id=<?= $row['id']; ?>" class="bg-emerald-deep text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-gold hover:text-emerald-deep transition-all shadow-lg hover:shadow-gold/30">
+                                Detail <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </a>
                         </div>
-                        <div class="flex items-center gap-4 text-gray-600 group-hover:text-emerald-deep transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center text-gold-dark">
-                                <i class="fa-solid fa-hotel"></i>
-                            </div>
-                            <span class="text-sm font-medium"><?= $row['hotel_makkah']; ?></span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-xs text-gray-400 uppercase tracking-wider">Mulai dari</p>
-                            <p class="text-3xl font-serif font-bold text-gold-dark">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></p>
-                        </div>
-                        <a href="detail-paket.php?id=<?= $row['id']; ?>" class="w-12 h-12 rounded-full border border-gold text-gold hover:bg-gold-gradient hover:text-emerald-deep hover:border-transparent flex items-center justify-center transition-all shadow-md group-hover:shadow-gold/50">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -179,7 +199,7 @@
             <!-- Leader Dynamic -->
             <div class="group relative" data-aos="fade-up">
                 <div class="relative h-96 rounded-2xl overflow-hidden shadow-lg">
-                    <img src="<?= $row['gambar']; ?>" alt="<?= $row['nama']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop'; ?>" alt="<?= $row['nama']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-emerald-deep/90 via-transparent to-transparent opacity-80"></div>
                     <div class="absolute bottom-0 left-0 w-full p-6 text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                         <h4 class="font-serif text-xl font-bold text-white mb-1"><?= $row['nama']; ?></h4>
@@ -230,7 +250,7 @@
                 <div class="swiper-slide h-auto">
                     <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 relative h-full flex flex-col" data-aos="fade-up">
                         <div class="flex items-center gap-4 mb-6">
-                            <img src="<?= $row['gambar']; ?>" alt="<?= $row['nama_jamaah']; ?>" class="w-14 h-14 rounded-full border-2 border-gold object-cover flex-shrink-0">
+                            <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://i.pravatar.cc/100?u=' . $row['id']; ?>" alt="<?= $row['nama_jamaah']; ?>" class="w-14 h-14 rounded-full border-2 border-gold object-cover flex-shrink-0" loading="lazy">
                             <div>
                                 <h4 class="font-bold text-gray-900"><?= $row['nama_jamaah']; ?></h4>
                                 <p class="text-xs text-gray-500"><?= $row['paket_diambil']; ?></p>
@@ -273,7 +293,7 @@
                 <!-- Gallery Slide -->
                 <div class="swiper-slide h-auto">
                     <div class="group relative h-80 rounded-2xl overflow-hidden cursor-pointer shadow-lg" data-aos="fade-up">
-                        <img src="<?= $row['gambar']; ?>" alt="<?= $row['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop'; ?>" alt="<?= $row['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 p-6">
                                 <span class="text-gold text-xs font-bold uppercase tracking-wider mb-2 block"><?= $row['kategori']; ?></span>
@@ -409,7 +429,7 @@
                 <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-deep/20 rounded-full blur-3xl"></div>
                 
                 <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1537181534458-75f69493922c?q=80&w=1976&auto=format&fit=crop" alt="Pelayanan Jamaah" class="w-full object-cover hover:scale-105 transition-transform duration-700">
+                    <img src="<?= getGambar('why_choose_us', 'https://images.unsplash.com/photo-1537181534458-75f69493922c?q=80&w=1976&auto=format&fit=crop'); ?>" alt="Pelayanan Jamaah" class="w-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy">
                     
                     <!-- Floating Badge -->
                     <div class="absolute bottom-8 right-8 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-gold/30 max-w-xs">

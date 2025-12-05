@@ -98,34 +98,121 @@
 <!-- Floating Smart AI Chat Widget -->
 <?php if(file_exists('components/chat-widget.php')) include 'components/chat-widget.php'; ?>
 
-<!-- Scripts -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- Scripts - Defer non-critical -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 <script>
-    // Initialize AOS
-    AOS.init({
-        duration: 1000,
-        once: true,
-        offset: 50,
-        easing: 'ease-out-cubic'
+    // Wait for DOM and scripts to load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS with optimized settings
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50,
+                easing: 'ease-out-cubic',
+                disable: window.innerWidth < 768 ? 'mobile' : false
+            });
+        }
+
+        // Initialize Swiper when loaded
+        function initSwipers() {
+            if (typeof Swiper !== 'undefined') {
+                // Testimonial Swiper
+                if (document.querySelector('.testimonialSwiper')) {
+                    new Swiper('.testimonialSwiper', {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                        loop: true,
+                        autoplay: {
+                            delay: 4000,
+                            disableOnInteraction: false,
+                        },
+                        pagination: {
+                            el: '.testimonialSwiper .swiper-pagination',
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 2,
+                            },
+                            1024: {
+                                slidesPerView: 3,
+                            },
+                        },
+                    });
+                }
+
+                // Gallery Swiper
+                if (document.querySelector('.gallerySwiper')) {
+                    new Swiper('.gallerySwiper', {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                        loop: true,
+                        autoplay: {
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        },
+                        pagination: {
+                            el: '.gallerySwiper .swiper-pagination',
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 2,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                            },
+                        },
+                    });
+                }
+            }
+        }
+
+        // Check if Swiper is already loaded
+        if (typeof Swiper !== 'undefined') {
+            initSwipers();
+        } else {
+            // Wait for Swiper to load
+            setTimeout(initSwipers, 500);
+        }
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+                const icon = btn.querySelector('i');
+                if (menu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            });
+        }
     });
 
-    // Mobile Menu Toggle
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-
-    if (btn && menu) {
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-            const icon = btn.querySelector('i');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            }
+    // Lazy load images that are below the fold
+    if ('IntersectionObserver' in window) {
+        const lazyImages = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                }
+            });
         });
+        lazyImages.forEach(img => imageObserver.observe(img));
     }
 </script>
 </body>
 </html>
+

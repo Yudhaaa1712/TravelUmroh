@@ -52,6 +52,14 @@
                             <span>Blog & Artikel</span>
                         </a>
                     </li>
+                    
+                    <li class="pt-4 pb-2 px-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Pengaturan</li>
+                    <li>
+                        <a href="pengaturan_gambar.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'pengaturan_gambar.php') ? 'bg-white/20 font-bold' : ''; ?>">
+                            <i class="fa-solid fa-images w-5 text-center"></i>
+                            <span>Gambar Website</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 

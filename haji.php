@@ -7,11 +7,12 @@ include 'header.php';
 <!-- Hero Section -->
 <section class="relative h-[60vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gold-gradient"></div>
+        <img src="<?= getGambar('haji_hero', 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=2070'); ?>" alt="Haji" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
     </div>
     <div class="relative z-10 text-center px-4" data-aos="fade-up">
-        <h1 class="font-serif text-5xl md:text-6xl font-bold text-emerald-deep mb-4">Ibadah Haji</h1>
-        <p class="text-xl text-emerald-deep max-w-2xl mx-auto">Sempurnakan Rukun Islam kelima dengan pelayanan terbaik dan bimbingan sesuai sunnah.</p>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold text-white mb-4">Ibadah Haji</h1>
+        <p class="text-xl text-gold-light max-w-2xl mx-auto">Sempurnakan Rukun Islam kelima dengan pelayanan terbaik dan bimbingan sesuai sunnah.</p>
     </div>
 </section>
 
@@ -44,7 +45,7 @@ include 'header.php';
             </div>
             <div class="relative" data-aos="fade-left">
                 <div class="absolute -top-4 -right-4 w-full h-full border-2 border-gold rounded-2xl"></div>
-                <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070&auto=format&fit=crop" alt="Manasik Haji" class="relative rounded-2xl shadow-2xl w-full object-cover h-[400px]">
+                <img src="<?= getGambar('haji_content', 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070&auto=format&fit=crop'); ?>" alt="Manasik Haji" class="relative rounded-2xl shadow-2xl w-full object-cover h-[400px]">
             </div>
         </div>
     </div>
@@ -83,7 +84,7 @@ include 'header.php';
                 <?php endif; ?>
                 
                 <div class="relative h-64">
-                    <img src="<?= $row['gambar']; ?>" alt="<?= $row['nama_paket']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=800&auto=format&fit=crop'; ?>" alt="<?= $row['nama_paket']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
                     <div class="absolute bottom-6 left-6 text-white">
                         <span class="<?= $badge_class; ?> px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-2 inline-block"><?= $badge_text; ?></span>

@@ -1,95 +1,120 @@
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/sidebar.php'; ?>
+<?php 
+require_once '../koneksi.php';
 
-<?php
-if (isset($_POST['submit'])) {
-    $nama_paket = htmlspecialchars($_POST['nama_paket']);
-    $deskripsi = htmlspecialchars($_POST['deskripsi']);
-    $harga = htmlspecialchars($_POST['harga']);
-    $durasi = htmlspecialchars($_POST['durasi']);
-    $pesawat = htmlspecialchars($_POST['pesawat']);
-    $hotel_makkah = htmlspecialchars($_POST['hotel_makkah']);
-    $hotel_madinah = htmlspecialchars($_POST['hotel_madinah']);
-    $keberangkatan = htmlspecialchars($_POST['keberangkatan']);
+// Proses form jika submit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama_paket = mysqli_real_escape_string($koneksi, $_POST['nama_paket']);
+    $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
+    $durasi = mysqli_real_escape_string($koneksi, $_POST['durasi']);
+    $harga = mysqli_real_escape_string($koneksi, $_POST['harga']);
+    $keberangkatan = mysqli_real_escape_string($koneksi, $_POST['keberangkatan']);
+    $pesawat = mysqli_real_escape_string($koneksi, $_POST['pesawat']);
+    $hotel_makkah = mysqli_real_escape_string($koneksi, $_POST['hotel_makkah']);
+    $hotel_madinah = mysqli_real_escape_string($koneksi, $_POST['hotel_madinah']);
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
-
-    // Upload gambar
-    $gambar = upload('uploads/paket/');
-    if (!$gambar) {
-        $gambar = 'https://via.placeholder.com/400x300'; // Default if failed
+    
+    // Handle gambar
+    $gambar = '';
+    if (!empty($_POST['gambar_url'])) {
+        $gambar = $_POST['gambar_url'];
+    } elseif (!empty($_FILES['gambar']['name'])) {
+        $gambar = upload($_FILES['gambar'], 'paket');
     }
-
-    $query = "INSERT INTO paket_umroh VALUES (NULL, '$nama_paket', '$deskripsi', '$harga', '$durasi', '$pesawat', '$hotel_makkah', '$hotel_madinah', '$keberangkatan', '$gambar', '$is_featured', CURRENT_TIMESTAMP)";
-
+    
+    $query = "INSERT INTO paket_umroh (nama_paket, deskripsi, durasi, harga, keberangkatan, pesawat, hotel_makkah, hotel_madinah, gambar, is_featured, created_at) 
+              VALUES ('$nama_paket', '$deskripsi', '$durasi', '$harga', '$keberangkatan', '$pesawat', '$hotel_makkah', '$hotel_madinah', '$gambar', '$is_featured', NOW())";
+    
     if (mysqli_query($koneksi, $query)) {
-        echo "<script>
-            alert('Data berhasil ditambahkan!');
-            document.location.href = 'paket_umroh.php';
-        </script>";
+        header('Location: paket_umroh.php?success=1');
+        exit;
     } else {
-        echo "<script>
-            alert('Data gagal ditambahkan!');
-        </script>";
+        $error = 'Gagal menambahkan paket: ' . mysqli_error($koneksi);
     }
 }
+
+include 'includes/header.php'; 
+include 'includes/sidebar.php'; 
 ?>
 
 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
     <div class="container mx-auto px-6 py-8">
-        <h3 class="text-gray-700 text-3xl font-medium mb-6">Tambah Paket Umroh</h3>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-gray-700 text-3xl font-medium">Tambah Paket Umroh</h3>
+            <a href="paket_umroh.php" class="text-gray-600 hover:text-gray-900">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Kembali
+            </a>
+        </div>
+
+        <?php if (isset($error)): ?>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <?= $error; ?>
+        </div>
+        <?php endif; ?>
 
         <div class="bg-white shadow-md rounded-lg p-6">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Paket</label>
-                        <input type="text" name="nama_paket" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Paket *</label>
+                        <input type="text" name="nama_paket" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Harga (Rp)</label>
-                        <input type="number" name="harga" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Durasi *</label>
+                        <input type="text" name="durasi" placeholder="contoh: 9 Hari 8 Malam" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Durasi (Contoh: 9 Hari)</label>
-                        <input type="text" name="durasi" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Harga (Rp) *</label>
+                        <input type="number" name="harga" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Tanggal Keberangkatan</label>
-                        <input type="date" name="keberangkatan" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Tanggal Keberangkatan *</label>
+                        <input type="date" name="keberangkatan" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Maskapai Pesawat</label>
-                        <input type="text" name="pesawat" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Pesawat</label>
+                        <input type="text" name="pesawat" placeholder="contoh: Garuda Indonesia" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
+                    
+                    <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2">Hotel Makkah</label>
-                        <input type="text" name="hotel_makkah" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <input type="text" name="hotel_makkah" placeholder="contoh: Hilton Suites Makkah" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
+                    
+                    <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2">Hotel Madinah</label>
-                        <input type="text" name="hotel_madinah" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <input type="text" name="hotel_madinah" placeholder="contoh: Pullman Zamzam Madinah" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Gambar Paket</label>
-                        <input type="file" name="gambar" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Gambar (Upload File)</label>
+                        <input type="file" name="gambar" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Atau URL Gambar</label>
+                        <input type="url" name="gambar_url" placeholder="https://example.com/gambar.jpg" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Deskripsi</label>
+                        <textarea name="deskripsi" rows="4" placeholder="Deskripsi paket umrah..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald"></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="is_featured" class="form-checkbox h-5 w-5 text-emerald">
+                            <span class="ml-2 text-gray-700">Tampilkan di Homepage (Featured)</span>
+                        </label>
                     </div>
                 </div>
-
-                <div class="mb-4 mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Deskripsi Lengkap</label>
-                    <textarea name="deskripsi" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="is_featured" class="form-checkbox h-5 w-5 text-emerald">
-                        <span class="ml-2 text-gray-700">Tampilkan di Beranda (Featured)</span>
-                    </label>
-                </div>
-
-                <div class="flex items-center justify-end mt-6">
-                    <button type="submit" name="submit" class="bg-emerald text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-emerald/90 transition-colors">
-                        Simpan Paket
+                
+                <div class="mt-6">
+                    <button type="submit" class="bg-emerald text-white px-6 py-2 rounded-lg hover:bg-emerald/90 transition-colors">
+                        <i class="fa-solid fa-save mr-2"></i> Simpan Paket
                     </button>
                 </div>
             </form>

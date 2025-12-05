@@ -1,60 +1,93 @@
 <?php
-header('Content-type: application/xml');
-include 'koneksi.php';
+/**
+ * Auto-Generate XML Sitemap untuk Programmatic SEO
+ * Akses: /sitemap.php atau /sitemap.xml (via .htaccess)
+ */
 
-// Detect Base URL dynamically
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-$host = $_SERVER['HTTP_HOST'];
-$path = dirname($_SERVER['PHP_SELF']);
-$base_url = $protocol . "://" . $host . $path . "/";
-// Ensure no double slashes at the end if path is root
-if (substr($base_url, -2) == "//") {
-    $base_url = substr($base_url, 0, -1);
-}
+require_once 'includes/cities_data.php';
 
-echo "<?xml version='1.0' encoding='UTF-8'?>";
-echo "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
+// Set header XML
+header('Content-Type: application/xml; charset=utf-8');
 
-// Static Pages
-$pages = ['index.php', 'tentang-kami.php', 'paket.php', 'haji.php', 'galeri.php', 'testimoni.php', 'kontak.php', 'blog.php'];
+// Base URL website
+$baseUrl = 'https://ababiltour.com';
 
-foreach($pages as $page) {
-    echo "<url>";
-    echo "<loc>" . $base_url . $page . "</loc>";
-    echo "<changefreq>monthly</changefreq>";
-    echo "<priority>0.8</priority>";
-    echo "</url>";
-}
+// Tanggal hari ini untuk lastmod
+$today = date('Y-m-d');
 
-// Paket Umroh
-$query = mysqli_query($koneksi, "SELECT id, nama_paket FROM paket_umroh");
-if($query) {
-    while($row = mysqli_fetch_assoc($query)) {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $row['nama_paket'])));
-        echo "<url>";
-        echo "<loc>" . $base_url . "paket/" . $row['id'] . "/" . $slug . "</loc>";
-        echo "<changefreq>weekly</changefreq>";
-        echo "<priority>0.9</priority>";
-        echo "</url>";
-    }
-}
+// Ambil semua kota
+$cities = getAllCities();
 
-// Blog Articles
-$check_table = mysqli_query($koneksi, "SHOW TABLES LIKE 'artikel'");
-if(mysqli_num_rows($check_table) > 0) {
-    $query = mysqli_query($koneksi, "SELECT id, judul, created_at FROM artikel");
-    if($query) {
-        while($row = mysqli_fetch_assoc($query)) {
-            $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $row['judul'])));
-            echo "<url>";
-            echo "<loc>" . $base_url . "blog/" . $row['id'] . "/" . $slug . "</loc>";
-            echo "<lastmod>" . date('Y-m-d', strtotime($row['created_at'])) . "</lastmod>";
-            echo "<changefreq>monthly</changefreq>";
-            echo "<priority>0.7</priority>";
-            echo "</url>";
-        }
-    }
-}
-
-echo "</urlset>";
+// Output XML
+echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
 ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <!-- Homepage -->
+    <url>
+        <loc><?= $baseUrl; ?>/</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Main Pages -->
+    <url>
+        <loc><?= $baseUrl; ?>/paket.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc><?= $baseUrl; ?>/haji.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc><?= $baseUrl; ?>/galeri.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc><?= $baseUrl; ?>/testimoni.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc><?= $baseUrl; ?>/blog.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc><?= $baseUrl; ?>/kontak.php</loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Programmatic SEO: City Landing Pages -->
+<?php foreach ($cities as $slug => $city): ?>
+    <url>
+        <loc><?= $baseUrl; ?>/travel-umrah-<?= $slug; ?></loc>
+        <lastmod><?= $today; ?></lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc><?= $baseUrl; ?>/images/umrah-<?= $slug; ?>.jpg</image:loc>
+            <image:title>Paket Umrah dari <?= htmlspecialchars($city['name']); ?></image:title>
+            <image:caption>Travel Umrah terpercaya untuk jamaah <?= htmlspecialchars($city['name']); ?>, <?= htmlspecialchars($city['province']); ?></image:caption>
+        </image:image>
+    </url>
+<?php endforeach; ?>
+    
+</urlset>

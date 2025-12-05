@@ -23,7 +23,7 @@ include 'header.php';
 <!-- Page Header -->
 <section class="relative h-[60vh] overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo $paket['gambar']; ?>" alt="<?php echo $paket['nama_paket']; ?>" class="w-full h-full object-cover animate-float" style="animation-duration: 30s; transform: scale(1.1);">
+        <img src="<?php echo !empty($paket['gambar']) ? $paket['gambar'] : 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=1600&auto=format&fit=crop'; ?>" alt="<?php echo $paket['nama_paket']; ?>" class="w-full h-full object-cover animate-float" style="animation-duration: 30s; transform: scale(1.1);">
         <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90"></div>
     </div>
     <div class="absolute bottom-0 left-0 w-full p-8 md:p-16">

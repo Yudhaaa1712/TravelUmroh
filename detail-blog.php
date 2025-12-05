@@ -27,7 +27,7 @@ include 'header.php';
 <!-- Article Header -->
 <section class="relative h-[50vh] min-h-[400px] overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <img src="<?php echo $article['gambar'] ? $article['gambar'] : 'https://via.placeholder.com/1920x1080'; ?>" alt="<?php echo $article['judul']; ?>" class="w-full h-full object-cover">
+        <img src="<?php echo !empty($article['gambar']) ? $article['gambar'] : 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1920&auto=format&fit=crop'; ?>" alt="<?php echo $article['judul']; ?>" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
     </div>
     <div class="absolute bottom-0 left-0 w-full p-8 md:p-16">

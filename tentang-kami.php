@@ -7,7 +7,7 @@ include 'header.php';
 <!-- Hero Section -->
 <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070&auto=format&fit=crop" alt="Tentang Kami" class="w-full h-full object-cover">
+        <img src="<?= getGambar('about_hero', 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070&auto=format&fit=crop'); ?>" alt="Tentang Kami" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/60"></div>
     </div>
     <div class="relative z-10 text-center px-4" data-aos="fade-up">
@@ -44,7 +44,7 @@ include 'header.php';
             <div class="relative" data-aos="fade-left">
                 <div class="absolute -top-6 -left-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl"></div>
                 <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-emerald-deep/10 rounded-full blur-2xl"></div>
-                <img src="https://images.unsplash.com/photo-1577046848358-4623c085f0ea?q=80&w=2070&auto=format&fit=crop" alt="Office Team" class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px]">
+                <img src="<?= getGambar('about_profile', 'https://images.unsplash.com/photo-1577046848358-4623c085f0ea?q=80&w=2070&auto=format&fit=crop'); ?>" alt="Office Team" class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px]">
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@ include 'header.php';
             
             <div class="flex flex-col md:flex-row items-center gap-12 relative z-10">
                 <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-full overflow-hidden border-4 border-gold shadow-xl" data-aos="zoom-in">
-                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" alt="CEO" class="w-full h-full object-cover">
+                    <img src="<?= getGambar('about_ceo', 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop'); ?>" alt="CEO" class="w-full h-full object-cover">
                 </div>
                 <div class="text-center md:text-left" data-aos="fade-left">
                     <i class="fa-solid fa-quote-left text-4xl text-gold/30 mb-4 block"></i>

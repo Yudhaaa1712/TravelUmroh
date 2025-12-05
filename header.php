@@ -1,3 +1,4 @@
+<?php require_once 'koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
@@ -6,23 +7,37 @@
     <title><?php echo isset($pageTitle) ? $pageTitle . ' - Ababil Tour & Hajj' : 'Ababil Tour & Hajj - Perjalanan Ibadah Nyaman & Aman'; ?></title>
     <meta name="description" content="<?php echo isset($pageDesc) ? $pageDesc : 'Melayani perjalanan ibadah Umroh dan Haji dengan pelayanan prima, amanah, dan profesional sejak 2010. Kenyamanan Anda adalah prioritas kami.'; ?>">
     
+    <!-- DNS Prefetch & Preconnect for faster loading -->
+    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//images.unsplash.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Critical CSS Inline for faster first paint -->
+    <style>
+        body{margin:0;font-family:'Inter',sans-serif;background:#f9fafb}
+        .loading-placeholder{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    </style>
+    
+    <!-- Google Fonts - Preload critical font -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FontAwesome - Defer non-critical -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- AOS Animation -->
+    <!-- AOS Animation - Defer -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
@@ -55,7 +70,7 @@
         }
     </script>
 </head>
-<body class="font-sans text-gray-700 bg-gray-50 antialiased">
+<body class="font-sans text-gray-700 bg-gray-50 antialiased overflow-x-hidden">
 
 <!-- Navbar -->
 <header class="fixed w-full z-50 transition-all duration-300 glass-gold shadow-lg">

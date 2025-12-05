@@ -16,8 +16,12 @@ if(mysqli_num_rows($check_table) > 0) {
 ?>
 
 <!-- Page Header -->
-<section class="relative py-24 bg-emerald-deep overflow-hidden">
-    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="<?= getGambar('blog_hero', 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=2070'); ?>" alt="Blog" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-emerald-deep/80"></div>
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+    </div>
     <div class="container mx-auto px-4 relative z-10 text-center">
         <h1 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4" data-aos="fade-up">Artikel & Berita</h1>
         <p class="text-gold-light text-lg max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Informasi terkini seputar ibadah Umroh, Haji, dan tips perjalanan islami.</p>
@@ -36,7 +40,7 @@ if(mysqli_num_rows($check_table) > 0) {
                 <?php foreach($articles as $a): ?>
                     <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group" data-aos="fade-up">
                         <div class="relative h-56 overflow-hidden">
-                            <img src="<?php echo $a['gambar'] ? $a['gambar'] : 'https://via.placeholder.com/800x600?text=No+Image'; ?>" alt="<?php echo $a['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <img src="<?php echo !empty($a['gambar']) ? $a['gambar'] : 'https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop'; ?>" alt="<?php echo $a['judul']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
                             <div class="absolute top-4 left-4 bg-gold text-emerald-deep text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                                 <?php echo date('d M Y', strtotime($a['created_at'])); ?>
                             </div>

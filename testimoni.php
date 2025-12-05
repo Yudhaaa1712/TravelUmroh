@@ -7,12 +7,13 @@ include 'header.php';
 <!-- Hero Section -->
 <section class="relative h-[40vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gold-gradient"></div>
+        <img src="<?= getGambar('testimoni_hero', 'https://images.unsplash.com/photo-1565019001609-9af23d80a1b4?q=80&w=2070'); ?>" alt="Testimoni" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] opacity-10"></div>
     </div>
     <div class="relative z-10 text-center px-4" data-aos="fade-up">
-        <h1 class="font-serif text-5xl md:text-6xl font-bold text-emerald-deep mb-4">Testimoni Jamaah</h1>
-        <p class="text-xl text-emerald-deep max-w-2xl mx-auto">Kisah inspiratif dan pengalaman spiritual para tamu Allah bersama Ababil Tour.</p>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold text-white mb-4">Testimoni Jamaah</h1>
+        <p class="text-xl text-gold-light max-w-2xl mx-auto">Kisah inspiratif dan pengalaman spiritual para tamu Allah bersama Ababil Tour.</p>
     </div>
 </section>
 
@@ -56,7 +57,7 @@ include 'header.php';
             <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 relative group hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up">
                 <div class="absolute top-6 right-8 text-6xl text-gold/10 font-serif">"</div>
                 <div class="flex items-center gap-4 mb-6">
-                    <img src="<?= $row['gambar']; ?>" alt="<?= $row['nama_jamaah']; ?>" class="w-16 h-16 rounded-full object-cover border-2 border-gold p-1">
+                    <img src="<?= !empty($row['gambar']) ? $row['gambar'] : 'https://i.pravatar.cc/100?u=' . $row['id']; ?>" alt="<?= $row['nama_jamaah']; ?>" class="w-16 h-16 rounded-full object-cover border-2 border-gold p-1">
                     <div>
                         <h4 class="font-bold text-lg text-emerald-deep"><?= $row['nama_jamaah']; ?></h4>
                         <p class="text-xs text-gray-500 uppercase tracking-wider"><?= $row['paket_diambil']; ?></p>

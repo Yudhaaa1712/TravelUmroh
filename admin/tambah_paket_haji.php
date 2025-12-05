@@ -12,10 +12,16 @@ if (isset($_POST['submit'])) {
     $hotel_makkah = htmlspecialchars($_POST['hotel_makkah']);
     $hotel_madinah = htmlspecialchars($_POST['hotel_madinah']);
 
-    // Upload gambar
-    $gambar = upload('uploads/haji/');
-    if (!$gambar) {
-        $gambar = 'https://via.placeholder.com/400x300';
+    // Cek apakah pakai URL atau upload file
+    $gambar_url = htmlspecialchars($_POST['gambar_url'] ?? '');
+    
+    if (!empty($gambar_url)) {
+        $gambar = $gambar_url;
+    } else {
+        $gambar = upload('uploads/haji/');
+        if (!$gambar) {
+            $gambar = 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=800';
+        }
     }
 
     $query = "INSERT INTO paket_haji VALUES (NULL, '$nama_paket', '$tipe_haji', '$deskripsi', '$harga_usd', '$estimasi', '$hotel_makkah', '$hotel_madinah', '$pesawat', '$gambar', CURRENT_TIMESTAMP)";
@@ -47,8 +53,8 @@ if (isset($_POST['submit'])) {
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Tipe Haji</label>
                         <select name="tipe_haji" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="Plus">Haji Plus (Kuota)</option>
-                            <option value="Furoda">Haji Furoda (Mujamalah)</option>
+                            <option value="Plus">🕋 Haji Plus (Kuota)</option>
+                            <option value="Furoda">⭐ Haji Furoda (Mujamalah)</option>
                         </select>
                     </div>
                     <div class="mb-4">
@@ -71,13 +77,49 @@ if (isset($_POST['submit'])) {
                         <label class="block text-gray-700 text-sm font-bold mb-2">Hotel Madinah</label>
                         <input type="text" name="hotel_madinah" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Gambar Paket</label>
-                        <input type="file" name="gambar" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+
+                <!-- Opsi Gambar -->
+                <div class="mb-6 mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label class="block text-gray-700 text-sm font-bold mb-3">
+                        <i class="fa-solid fa-image mr-2"></i>Gambar Paket
+                    </label>
+                    
+                    <!-- Tab Switch -->
+                    <div class="flex gap-2 mb-4">
+                        <button type="button" onclick="switchTab('upload')" id="tab-upload" class="px-4 py-2 rounded-lg bg-emerald text-white font-medium text-sm transition-colors">
+                            <i class="fa-solid fa-upload mr-1"></i> Upload File
+                        </button>
+                        <button type="button" onclick="switchTab('url')" id="tab-url" class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 font-medium text-sm transition-colors">
+                            <i class="fa-solid fa-link mr-1"></i> URL Internet
+                        </button>
+                    </div>
+
+                    <!-- Upload File -->
+                    <div id="input-upload" class="block">
+                        <input type="file" name="gambar" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WebP. Max 2MB</p>
+                    </div>
+
+                    <!-- URL Internet -->
+                    <div id="input-url" class="hidden">
+                        <input type="url" name="gambar_url" placeholder="https://images.unsplash.com/..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p class="text-xs text-gray-500 mt-1">Paste URL gambar dari internet (Unsplash, dll)</p>
+                        
+                        <!-- Contoh Gambar Haji -->
+                        <div class="mt-3">
+                            <p class="text-xs font-bold text-gray-600 mb-2">Pilih Cepat (Haji & Umroh):</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="setImageUrl('https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?q=80&w=800')" class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">Haji 1</button>
+                                <button type="button" onclick="setImageUrl('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=800')" class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">Ka'bah</button>
+                                <button type="button" onclick="setImageUrl('https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800')" class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">Masjidil Haram</button>
+                                <button type="button" onclick="setImageUrl('https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=800')" class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">Madinah</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-4 mt-4">
+                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Deskripsi Lengkap</label>
                     <textarea name="deskripsi" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
@@ -91,6 +133,38 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 </main>
+
+<script>
+function switchTab(type) {
+    const uploadDiv = document.getElementById('input-upload');
+    const urlDiv = document.getElementById('input-url');
+    const tabUpload = document.getElementById('tab-upload');
+    const tabUrl = document.getElementById('tab-url');
+    
+    if (type === 'upload') {
+        uploadDiv.classList.remove('hidden');
+        urlDiv.classList.add('hidden');
+        tabUpload.classList.remove('bg-gray-300', 'text-gray-700');
+        tabUpload.classList.add('bg-emerald', 'text-white');
+        tabUrl.classList.remove('bg-emerald', 'text-white');
+        tabUrl.classList.add('bg-gray-300', 'text-gray-700');
+        document.querySelector('input[name="gambar_url"]').value = '';
+    } else {
+        uploadDiv.classList.add('hidden');
+        urlDiv.classList.remove('hidden');
+        tabUrl.classList.remove('bg-gray-300', 'text-gray-700');
+        tabUrl.classList.add('bg-emerald', 'text-white');
+        tabUpload.classList.remove('bg-emerald', 'text-white');
+        tabUpload.classList.add('bg-gray-300', 'text-gray-700');
+        document.querySelector('input[name="gambar"]').value = '';
+    }
+}
+
+function setImageUrl(url) {
+    document.querySelector('input[name="gambar_url"]').value = url;
+}
+</script>
+
 </div>
 </body>
 </html>

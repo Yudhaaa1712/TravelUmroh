@@ -7,11 +7,12 @@ include 'header.php';
 <!-- Hero Section -->
 <section class="relative h-[40vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gold-gradient"></div>
+        <img src="<?= getGambar('kontak_hero', 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=2074'); ?>" alt="Kontak" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
     </div>
     <div class="relative z-10 text-center px-4" data-aos="fade-up">
-        <h1 class="font-serif text-5xl md:text-6xl font-bold text-emerald-deep mb-4">Hubungi Kami</h1>
-        <p class="text-xl text-emerald-deep max-w-2xl mx-auto">Kami siap melayani kebutuhan informasi perjalanan ibadah Anda.</p>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold text-white mb-4">Hubungi Kami</h1>
+        <p class="text-xl text-gold-light max-w-2xl mx-auto">Kami siap melayani kebutuhan informasi perjalanan ibadah Anda.</p>
     </div>
 </section>
 
